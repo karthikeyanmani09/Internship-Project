@@ -24,7 +24,7 @@
 						List
 					</h3>
 					<div class="card-tools" >
-						<div type="button" class="btn btn-tool" title="post" @click="redirectTo()" >
+						<div type="button" class="btn btn-tool button1" title="post" @click="redirectTo()" >
 							<i class="fas fa-plus"></i>
 						</div>
 						</div>
@@ -47,10 +47,10 @@
 						<td>{{post.title}}</td>
 						<td>{{post.body.slice(0, 120)}}...</td>
 						<td class="project-actions text-right">
-							<router-link class="btn btn-info btn-sm" :to="'/update/'+post.id">
+							<router-link class="btn btn-info btn-sm button2"  id="update" :to="'/update/'+post.id">
 								<i class="fas fa-pencil-alt"></i> Edit
 							</router-link>
-							<a class="btn btn-danger btn-sm" @click="deletePost(post.id)">
+							<a class="btn btn-danger btn-sm button3" @click="deletePost(post.id)">
 								<i class="fas fa-trash"></i> Delete
 							</a></td>
 						</tbody>
@@ -112,7 +112,8 @@ export default {
 			for (let index=1; index <= numberOfPages; index++) {
 				this.pages.push(index);
 			}
-		},paginate(users) {
+		},
+						paginate(users) {
 			let page=this.page;
 			let perPage=this.perPage;
 			let from=(page * perPage) - perPage;
@@ -166,16 +167,9 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 .btn{
 	margin-left: 0.5rem;
 	margin-bottom: 0.5rem;
 }
-.clearfix{
-	margin-top:0.5rem ;
-}
-.card-title{
-	margin-top:0.5rem ;
-}
-
 </style>

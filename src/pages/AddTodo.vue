@@ -28,18 +28,18 @@
             <Form @submit="">
               <div class="form-group">
                 <label for="postTitle"> Title </label>
-                <Field type="text" rules="required"  name="title" id="inputTitle" placeholder="Title"  v-model="title" class="form-control" />
-		              <ErrorMessage class="text-red" name="title"/>
+                <Field type="text" :rules="validateEmail" name="title" id="inputTitle" placeholder="Title" data-title  v-model="title" class="form-control title" />
+			              <ErrorMessage class="text-red" name="title"/>
               </div>
               <div class="form-group">
                 <label for="postBody"> Body </label>
-                <Field  type="text" name="body" rules="required"  id="inputBody" placeholder="Body" v-model="body" class="form-control" rows="3"/>
+                <Field  type="text" name="body" :rules="validateEmail"  id="inputBody" placeholder="Body" data-body  v-model="body" class="form-control body" rows="3"/>
 	              <ErrorMessage class="text-red" name="body"/>
               </div>
 	            <div class="row">
 		            <div class="col-12">
 			            <button class="btn btn-secondary" @click="addRedirect()"><i class="fas fa-times"></i>  Cancel</button>
-			            <button class="btn btn-success swalDefaultSuccess float-right" type="submit"  @click="onPost()"><i class="fas fa-plus"></i>  Add</button>
+			            <button class="btn btn-success swalDefaultSuccess float-right button1" type="submit"  @click="onPost()"><i class="fas fa-plus"></i>  Add</button>
 		            </div>
 	            </div>
             </Form>
@@ -111,14 +111,22 @@ export default {
 				});
 			}
 	  },
+				validateEmail(value) {
+							// if the field is empty
+							if (!value) {
+										return 'This field is required';
+							}
+							else{
+										return ''
+							}
+				},
 	  addRedirect(){
 		  this.$router.push('/home')
 	  },
 	  },
+			
 	  }
 </script>
 
 <style scoped>
-
-
 </style>

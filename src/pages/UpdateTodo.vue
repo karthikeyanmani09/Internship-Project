@@ -28,12 +28,12 @@
               <Form @submit="" >
                 <div class="form-group">
                   <label for="postTitle"> Title </label>
-                  <Field type="text" rules="required" name="title" id="inputTitle"  v-model="posts.title" class="form-control"/>
+                  <Field type="text" :rules="validateEmail" name="title" id="inputTitle"  v-model="posts.title" class="form-control"/>
 	                <ErrorMessage class="text-red" name="title"/>
                 </div>
                 <div class="form-group">
                   <label for="postBody"> Body </label>
-                  <Field type="text" name="body" rules="required" id="inputBody"  placeholder="Body" v-model="posts.body" class="form-control" rows="3"/>
+                  <Field type="text" name="body" :rules="validateEmail" id="inputBody"  placeholder="Body" v-model="posts.body" class="form-control" rows="3"/>
 	                <ErrorMessage class="text-red" name="body"/>
                 </div>
 	              <div class="row">
@@ -109,6 +109,14 @@ methods:{
 	
 		}
 	},
+			validateEmail(value) {
+						if (!value) {
+									return 'This field is required';
+						}
+						else{
+									return ''
+						}
+			},
 	updateRedirect(){
 		this.$router.push('/home')
 	},
@@ -122,7 +130,7 @@ methods:{
 		});
 	}
 },
-	mounted() {
+	created() {
 		this.getPosts(this.$route.params.id);
 	}
 }
