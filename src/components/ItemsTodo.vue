@@ -47,7 +47,7 @@
 						<td>{{post.title}}</td>
 						<td>{{post.body.slice(0, 120)}}...</td>
 						<td class="project-actions text-right">
-							<router-link class="btn btn-info btn-sm button2"  id="update" :to="'/update/'+post.id">
+							<router-link class="btn btn-info btn-sm"  id="update" :to="'/update/'+post.id">
 								<i class="fas fa-pencil-alt"></i> Edit
 							</router-link>
 							<a class="btn btn-danger btn-sm button3" @click="deletePost(post.id)">
@@ -113,12 +113,12 @@ export default {
 				this.pages.push(index);
 			}
 		},
-						paginate(users) {
+						paginate() {
 			let page=this.page;
 			let perPage=this.perPage;
 			let from=(page * perPage) - perPage;
 			let to=(page * perPage);
-			return users.slice(from,to);
+			return this.users.slice(from,to);
 		},
 	deletePost(id){
 				Swal.fire({
@@ -153,7 +153,7 @@ export default {
 					return this.$store.state['users'];
 			},
 		displayedPosts() {
-			return this.paginate(this.users);
+			return this.paginate();
 		}
 		
 	},watch:{
@@ -161,13 +161,13 @@ export default {
 			this.setPages();
 		},
 	},
-	mounted () {
+	created () {
 			this.$store.dispatch('fetchUsers');
 	}
 }
 </script>
 
-<style>
+<style scoped>
 .btn{
 	margin-left: 0.5rem;
 	margin-bottom: 0.5rem;

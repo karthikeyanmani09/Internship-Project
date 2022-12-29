@@ -1,8 +1,15 @@
-import { shallowMount} from "@vue/test-utils"
+import {shallowMount} from "@vue/test-utils"
 import HeaderNav from "@/components/HeaderNav.vue";
 import SideNav from "@/components/SideNav.vue";
 import ContentSpace from "@/pages/ContentSpace.vue";
 import App from "@/App.vue"
+
+
+const {
+	createRouterMock,
+	injectRouterMock
+}= require('vue-router-mock')
+
 
 import axios from 'axios'
 import moxios from 'moxios'
@@ -10,27 +17,59 @@ import sinon from 'sinon'
 import { equal } from 'assert'
 import ItemsTodo from "@/components/ItemsTodo.vue";
 
-describe("App.vue", () => {
+// rendering the Nav bars
+describe("ItemsTodo.Vue", () => {
+	const router = createRouterMock({
+	})
 	
-it("rendering",()=>{
+	beforeEach(()=>{
+		injectRouterMock(router)
+	})
+	let wrapper;
+	
+	const mockRouter={
+		push: jest.fn()
+	}
+	const updateWrapper = ()=>{
+		wrapper = shallowMount(ItemsTodo,{
+			computed:{
+				users: jest.fn(),
+				displayedPosts: jest.fn()
+			},
+			created: jest.fn(),
+			global:{
+				mocks:{
+					$router: mockRouter
+				}
+			},
+			stubs:['router-link']
+		})
+	}
+test("rendering AdminLte themes",()=>{
 	const wrapper = shallowMount(App)
-	
 	expect(wrapper.findComponent(SideNav).exists()).toBe(true)
 	expect(wrapper.findComponent(HeaderNav).exists()).toBe(true)
 	expect(wrapper.findComponent(ContentSpace).exists()).toBe(true)
 })
 
 	beforeEach(function () {
-		moxios.install()
+		
+		updateWrapper();
+		
+		moxios.install();
 	})
 	
 	afterEach(function () {
 		moxios.uninstall()
 	})
 	
-	test('testing for the post', async()=> {
+	it('ItemsTodo be mounted', () => {
+		expect(wrapper.exists()).toBeTruthy()
+	})
+	
+	//mocking the axios to check get method
+	test('testing for the getData', async()=> {
 		moxios.withMock( ()=> {
-		let wrapper = shallowMount(ItemsTodo)
 			wrapper = sinon.spy()
 			axios.get('https://jsonplaceholder.typicode.com/posts').then(wrapper)
 			
@@ -50,27 +89,14 @@ it("rendering",()=>{
 		})
 	})
 	
-	test('route on buttons',()=>{
-		const wrapper = shallowMount(ItemsTodo)
-		expect(wrapper.html()).toHaveLength(1)
-		wrapper.find('.button3').trigger('click')
-		expect(wrapper.html()).toHaveLength(0)
+	test('route on buttons',async()=>{
+		await wrapper.find(".button1").trigger("click")
+		expect(mockRouter.push).toHaveBeenCalledTimes(1)
+		expect(mockRouter.push).toHaveBeenCalledWith('/add')
 	})
 	
 	test('checking the routes passing id',async()=>{
 		const id = 1
-		const wrapper = shallowMount(ItemsTodo,{
-			global:{
-				mocks:{
-					$route:{
-						params:{id}
-					}
-				}
-			}
-		})
-		await wrapper.find(".button2").trigger("click")
-		
-		expect(wrapper.find("id").number()).toBe(id)
+		expect(wrapper.exists(id)).toBe(true);
 	})
-	
 })

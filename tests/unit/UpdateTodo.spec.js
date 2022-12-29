@@ -5,20 +5,43 @@ import sinon from "sinon";
 import axios from "axios";
 import {equal} from "assert";
 
-describe('Client', () => {
-	it('should mount Client', async () => {
-		const wrapper = shallowMount(UpdateTodo, {
+const {
+	createRouterMock,
+	injectRouterMock
+}= require('vue-router-mock')
+
+describe('UpdateTodo.vue', () => {
+	let wrapper;
+	
+	const router = createRouterMock({
+	})
+	
+	beforeEach(()=>{
+		injectRouterMock(router)
+	})
+	const updateWrapper=()=>{
+		wrapper = shallowMount(UpdateTodo,{
 			global: {
 				mocks: {
-					$route: {params: { id: 1}},
+					$router: {params: { id: 1}},
 				}
-			}
+			},
+			created:jest.fn(),
+			stubs:['router-link']
 		})
-		expect(wrapper.exists()).toBe(true);
+	}
+	
+	test('UpdateTodo be mounted', async () => {
+		await expect(wrapper.exists()).toBeTruthy()
+	})
+	
+	test('route params id', async () => {
+		await expect(wrapper.exists()).toBe(true);
 	});
 	
 	beforeEach(function () {
 		moxios.install()
+		updateWrapper();
 	})
 	
 	afterEach(function () {
@@ -27,13 +50,6 @@ describe('Client', () => {
 	
 	test('testing for the post', async()=> {
 		moxios.withMock( ()=> {
-			let wrapper = shallowMount(UpdateTodo,{
-				global: {
-					mocks: {
-						$route: {params: { id: 1}},
-					}
-				}
-			})
 			wrapper = sinon.spy()
 			axios.get('https://jsonplaceholder.typicode.com/posts/id').then(wrapper)
 			

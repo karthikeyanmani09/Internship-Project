@@ -1,8 +1,7 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-import router from './router.js'
+import router from './router'
 import axios from 'axios'
-import Vue from 'Vue'
 
 import { defineRule } from 'vee-validate';
 import AllRules from '@vee-validate/rules';

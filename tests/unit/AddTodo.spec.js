@@ -1,4 +1,4 @@
-import {mount} from "@vue/test-utils"
+import {mount,shallowMount} from "@vue/test-utils"
 import AddTodo from "@/pages/AddTodo.vue";
 import moxios from "moxios";
 import sinon from "sinon";
@@ -8,6 +8,10 @@ const {
 	createRouterMock,
 	injectRouterMock,
 } = require('vue-router-mock')
+
+const mockRouter = {
+	push: jest.fn()
+}
 
 
 describe("Adding Data", () => {
@@ -19,19 +23,17 @@ describe("Adding Data", () => {
 	test("renders title and body text", async () => {
 		let wrapper = mount(AddTodo)
 		
-		await wrapper.find("[data-title]").setValue("Title1")
-		await wrapper.find("[data-body]").setValue("Body2")
+		await wrapper.find('[data-test="title"]').setValue('title')
+		await wrapper.find('[data-test="body"]').setValue('body')
 		
-		await wrapper.find(".button1").trigger("click")
+		await wrapper.find("button").trigger("click")
 		
-		expect(wrapper.find(".title").text())
-		expect(wrapper.find(".body").text())
+		expect(wrapper.vm.title).toMatch('title')
+		
+		expect(wrapper.vm.body).toMatch('body')
 	})
 	
 	test('update the list', async()=> {
-		const mockRouter = {
-			push: jest.fn()
-		}
 		moxios.withMock( ()=> {
 			let wrapper = mount(AddTodo,{
 				global: {
@@ -61,7 +63,6 @@ describe("Adding Data", () => {
 			expect(mockRouter.push).toHaveBeenCalledWith('/home')
 		})
 	})
-
+	})
 	
 	
-})

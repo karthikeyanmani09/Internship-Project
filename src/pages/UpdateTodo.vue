@@ -38,11 +38,11 @@
                 </div>
 	              <div class="row">
 		              <div class="col-12">
-			              <button class="btn btn-secondary" @click="updateRedirect()"> <i class="fas fa-times"></i> Cancel</button>
-			              <button class="btn btn-success float-right" @click="onSubmit()"><i class="fas fa-pencil-alt"></i> Save Changes </button>
 		              </div>
 	              </div>
               </Form>
+			            <button class="btn btn-success float-right" @click="onSubmit()"><i class="fas fa-pencil-alt"></i> Save Changes </button>
+			            <button class="btn btn-secondary" @click="updateRedirect()"> <i class="fas fa-times"></i> Cancel</button>
             </div>
           <div class="overlay" v-if="loading">
 		          <i class=" fa fa-spinner fa-3x fa-spin"></i>
