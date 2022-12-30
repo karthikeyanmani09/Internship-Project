@@ -1,4 +1,4 @@
-import {mount,shallowMount} from "@vue/test-utils"
+import {mount} from "@vue/test-utils"
 import AddTodo from "@/pages/AddTodo.vue";
 import moxios from "moxios";
 import sinon from "sinon";
@@ -20,17 +20,35 @@ describe("Adding Data", () => {
 	beforeEach(() => {
 		injectRouterMock(router)
 	})
+	
+	test('checking the input field',async()=>{
+		const wrapper = mount(AddTodo)
+		expect(wrapper.findAll('label').length).toEqual(2)
+		expect(wrapper.findAll('label').at(0).text()).toMatch('Title')
+		expect(wrapper.findAll('label').at(1).text()).toMatch('Body')
+	})
+	
+	test('checking the input field',async()=>{
+		const wrapper = mount(AddTodo)
+		expect(wrapper.findAll('button').length).toEqual(2)
+		expect(wrapper.findAll('button').at(0).text()).toMatch('Cancel')
+		expect(wrapper.findAll('button').at(1).text()).toMatch('Add')
+	})
+	
 	test("renders title and body text", async () => {
-		let wrapper = mount(AddTodo)
 		
-		await wrapper.find('[data-test="title"]').setValue('title')
-		await wrapper.find('[data-test="body"]').setValue('body')
+		let wrapper = mount(AddTodo,{
+			stubs:['router-link','required']
+		})
+		
+		await wrapper.find('[data-test="title"]').setValue('title1')
+		await wrapper.find('[data-test="body"]').setValue('body1')
 		
 		await wrapper.find("button").trigger("click")
 		
-		expect(wrapper.vm.title).toMatch('title')
+		expect(wrapper.vm.title).toBe('title1')
 		
-		expect(wrapper.vm.body).toMatch('body')
+		expect(wrapper.vm.body).toBe('body1')
 	})
 	
 	test('update the list', async()=> {
@@ -40,7 +58,8 @@ describe("Adding Data", () => {
 					mocks: {
 						$router: mockRouter
 					}
-				}
+				},
+				stubs:['router-link','required']
 			})
 			wrapper.find("button").trigger("click")
 			wrapper = sinon.spy()

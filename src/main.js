@@ -4,6 +4,8 @@ import router from './router'
 import axios from 'axios'
 
 import { defineRule } from 'vee-validate';
+import { required } from '@vee-validate/rules';
+defineRule('required', required);
 import AllRules from '@vee-validate/rules';
 Object.keys(AllRules).forEach(rule => {
  defineRule(rule, AllRules[rule]);

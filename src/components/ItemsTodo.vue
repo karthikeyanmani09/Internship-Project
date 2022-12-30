@@ -47,7 +47,7 @@
 						<td>{{post.title}}</td>
 						<td>{{post.body.slice(0, 120)}}...</td>
 						<td class="project-actions text-right">
-							<router-link class="btn btn-info btn-sm"  id="update" :to="'/update/'+post.id">
+							<router-link class="btn btn-info btn-sm button2" id="update" :to="'/update/'+post.id">
 								<i class="fas fa-pencil-alt"></i> Edit
 							</router-link>
 							<a class="btn btn-danger btn-sm button3" @click="deletePost(post.id)">
@@ -61,8 +61,8 @@
 					</div>
 			</div>
 			<div class="clearfix btn-group col-md-2 offset-md-5">
-				<button  class="btn btn-primary btn-sm page-link"  v-if="page != 1" @click="page--"> &lt;&lt; </button>
-				<button  class=" btn btn-sm btn-primary page-link" v-for="pageNumber in pages.slice(page-1, page+5)" @click="page = pageNumber"> {{pageNumber}} </button>
+				<button  class="btn btn-primary btn-sm page-link "  v-if="page != 1" @click="page--"> &lt;&lt; </button>
+				<button  class=" btn btn-sm btn-primary  page-link" v-for="pageNumber in pages.slice(page-1, page+4)" @click="page = pageNumber"> {{pageNumber}} </button>
 				<button  @click="page++" v-if="page < pages.length" class="btn btn-primary btn-sm page-link"> &gt;&gt; </button>
 			</div>
 		</section>
@@ -88,32 +88,45 @@ import axios from 'axios';
 export default {
 	name:"ItemsTodo",
 		data() {
-		return {
-			isActive:false,
-				posts:[],
-			id:null,
-			userId:null,
-			title:'',
-			body:'',
-			baseUrl:'https://jsonplaceholder.typicode.com/posts/',
-			page:1,
-			perPage:10,
-			pages:[],
-				loading:false,
-		};
-	},methods:{
+			  return {
+					isActive:false,
+					posts:[],
+					id:null,
+					userId:null,
+					title:'',
+					body:'',
+					baseUrl:'https://jsonplaceholder.typicode.com/posts/',
+					page:1,
+					perPage:10,
+					pages:[],
+					loading:false,
+			  };
+		},
+	 
+		methods:{
+		
 		redirectTo() {
+			
 			this.$router.push('/add')
-		},toggle(){
+			
+		},
+			toggle(){
+			
 			this.isActive= !this.isActive;
 		},
-				setPages() {
+			  setPages() {
+			  
 			let numberOfPages=Math.ceil(this.users.length / this.perPage);
+			
 			for (let index=1; index <= numberOfPages; index++) {
+				  
 				this.pages.push(index);
 			}
 		},
-						paginate() {
+			
+			
+			paginate() {
+			
 			let page=this.page;
 			let perPage=this.perPage;
 			let from=(page * perPage) - perPage;

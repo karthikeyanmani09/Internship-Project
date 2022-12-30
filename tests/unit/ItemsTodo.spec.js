@@ -1,4 +1,4 @@
-import {shallowMount} from "@vue/test-utils"
+import {shallowMount,mount} from "@vue/test-utils"
 import HeaderNav from "@/components/HeaderNav.vue";
 import SideNav from "@/components/SideNav.vue";
 import ContentSpace from "@/pages/ContentSpace.vue";
@@ -69,8 +69,11 @@ test("rendering AdminLte themes",()=>{
 	
 	//mocking the axios to check get method
 	test('testing for the getData', async()=> {
+		
 		moxios.withMock( ()=> {
+			
 			wrapper = sinon.spy()
+			
 			axios.get('https://jsonplaceholder.typicode.com/posts').then(wrapper)
 			
 			moxios.wait(()=> {
@@ -99,4 +102,6 @@ test("rendering AdminLte themes",()=>{
 		const id = 1
 		expect(wrapper.exists(id)).toBe(true);
 	})
+	
+	
 })
