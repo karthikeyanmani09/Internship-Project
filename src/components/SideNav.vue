@@ -57,11 +57,11 @@ export default {
 			this.$router.push('/home')
 		},
 		setActive(){
-		this.isActive =! this.isActive;
+		this.isActive = true;
 		this.notActive = false;
 		},
 		setActives(){
-			this.notActive =! this.notActive;
+			this.notActive = true;
 			this.isActive = false;
 		}
 		

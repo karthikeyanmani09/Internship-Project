@@ -150,8 +150,7 @@ export default {
 		  
 		  baseUrl:'https://jsonplaceholder.typicode.com/posts',
 		  
-		  loading:false
-		  
+		  loading:false,
     };
 	
   },
@@ -225,7 +224,6 @@ export default {
 				},
 		  
 	  addRedirect(){
-			
 		  this.$router.push('/home')
 	  },
 		 

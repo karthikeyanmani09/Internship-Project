@@ -73,14 +73,6 @@
 	                <ErrorMessage class="text-red" name="body"/>
 		               
                 </div>
-		              
-<!--	              <div class="row">
-			             
-		              <div class="col-12">
-				            
-		              </div>
-			             
-	              </div>-->
 		             
               </Form>
 			            <button class="btn btn-success float-right" @click="onSubmit()"><i class="fas fa-pencil-alt"></i> Save Changes </button>

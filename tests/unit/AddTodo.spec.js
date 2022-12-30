@@ -44,14 +44,14 @@ describe("Adding Data", () => {
 		await wrapper.find('[data-test="title"]').setValue('title1')
 		await wrapper.find('[data-test="body"]').setValue('body1')
 		
-		await wrapper.find("button").trigger("click")
+		await wrapper.findAll("button").at(1).trigger("click")
 		
 		expect(wrapper.vm.title).toBe('title1')
 		
 		expect(wrapper.vm.body).toBe('body1')
 	})
 	
-	test('update the list', async()=> {
+	test('Add the list', async()=> {
 		moxios.withMock( ()=> {
 			let wrapper = mount(AddTodo,{
 				global: {
@@ -61,6 +61,7 @@ describe("Adding Data", () => {
 				},
 				stubs:['router-link','required']
 			})
+			wrapper.vm.onPost()
 			wrapper.find("button").trigger("click")
 			wrapper = sinon.spy()
 			axios.post('https://jsonplaceholder.typicode.com/posts').then(wrapper)
@@ -82,6 +83,17 @@ describe("Adding Data", () => {
 			expect(mockRouter.push).toHaveBeenCalledWith('/home')
 		})
 	})
+	
+	test("testing the route to home on cancel",async()=>{
+		const wrapper = mount(AddTodo)
+		wrapper.vm.addRedirect()
+		await wrapper.findAll("button").at(0).trigger("click")
+		
+		expect(mockRouter.push).toHaveBeenCalledTimes(1)
+		expect(mockRouter.push).toHaveBeenCalledWith('/home')
+		
+	})
+	
 	})
 	
 	

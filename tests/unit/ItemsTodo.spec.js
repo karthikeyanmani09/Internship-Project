@@ -93,14 +93,15 @@ test("rendering AdminLte themes",()=>{
 	})
 	
 	test('route on buttons',async()=>{
+		wrapper.vm.redirectTo()
 		await wrapper.find(".button1").trigger("click")
-		expect(mockRouter.push).toHaveBeenCalledTimes(1)
+		expect(mockRouter.push).toHaveBeenCalledTimes(2)
 		expect(mockRouter.push).toHaveBeenCalledWith('/add')
 	})
 	
 	test('checking the routes passing id',async()=>{
 		const id = 1
-		expect(wrapper.exists(id)).toBe(true);
+		await expect(wrapper.exists(id)).toBe(true);
 	})
 	
 	

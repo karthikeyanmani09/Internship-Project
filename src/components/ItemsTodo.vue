@@ -34,10 +34,10 @@
 					<table class="table table-striped projects">
 						<thead>
 						<tr>
-							<th style="width:1%">Id</th>
+							<th style="width:3%">Id</th>
 							<th style="width:20%">Title</th>
-							<th style="width:30%">Body</th>
-							<th style="width:10%"></th>
+							<th style="width:40%">Body</th>
+							<th style="width:20%"></th>
 						</tr>
 						</thead>
 						<tbody
@@ -47,7 +47,7 @@
 						<td>{{post.title}}</td>
 						<td>{{post.body.slice(0, 120)}}...</td>
 						<td class="project-actions text-right">
-							<router-link class="btn btn-info btn-sm button2" id="update" :to="'/update/'+post.id">
+							<router-link class="btn btn-info btn-sm" id="update" :to="'/update/'+post.id">
 								<i class="fas fa-pencil-alt"></i> Edit
 							</router-link>
 							<a class="btn btn-danger btn-sm button3" @click="deletePost(post.id)">
@@ -72,7 +72,7 @@
 		<div class="float-right d-none d-sm-block">
 			<b>Version</b> 3.2.0
 		</div>
-		<strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
+		<strong>Copyright &copy; 2014-2022 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
 	</footer>
 	
 	<aside class="control-sidebar control-sidebar-dark">
@@ -119,7 +119,7 @@ export default {
 			let numberOfPages=Math.ceil(this.users.length / this.perPage);
 			
 			for (let index=1; index <= numberOfPages; index++) {
-				  
+				
 				this.pages.push(index);
 			}
 		},
