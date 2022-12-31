@@ -36,8 +36,4 @@ export default {
 
 <style>
 
-/*li{
-	background-color: transparent;
-}*/
-
 </style>
