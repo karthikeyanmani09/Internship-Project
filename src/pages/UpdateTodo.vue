@@ -29,7 +29,7 @@
             </ol>
 		          
           </div>
-		        
+		        false
         </div>
 		      
       </div>
@@ -216,18 +216,18 @@ methods:{
 		
 	},
 	  validateForm(value) {
-			
+
 			if (!value) {
-				  
+
 				  return 'This field is required';
-				  
+
 			}
-			
+
 			else{
-				  
+
 				  return ''
 			}
-			
+
 	  },
 	
 },

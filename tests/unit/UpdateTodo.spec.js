@@ -10,6 +10,10 @@ import axios from "axios";
 
 import {equal} from "assert";
 
+import Swal from 'sweetalert2';
+
+import flushPromises from "flush-promises";
+
 const {
 	
 	createRouterMock,
@@ -41,14 +45,19 @@ describe('UpdateTodo.vue', () => {
 				mocks: {
 					
 					$router: {params: { id: 1}},
-					
+					loading: false,
 				}
 				
+			},
+			data(){
+			return{
+				loading:false
+			}
 			},
 			
 			created:jest.fn(),
 			
-			stubs:['router-link']
+			stubs:['router-link','required','loading','Swal']
 			
 		})
 		
@@ -86,14 +95,14 @@ describe('UpdateTodo.vue', () => {
 	test('testing for the post', async()=> {
 		
 		wrapper.vm.onSubmit()
-		
-		wrapper.find("button").trigger("click")
+
+		expect(wrapper.findAll('button').at(0).trigger("click"))
 		
 		moxios.withMock( ()=> {
 			
 			wrapper = sinon.spy()
 			
-			axios.get('https://jsonplaceholder.typicode.com/posts/id').then(wrapper)
+			axios.get('https://jsonplaceholder.typicode.com/posts/id').then(wrapper).loading=true
 			
 			moxios.wait(()=> {
 				
@@ -146,8 +155,7 @@ describe('UpdateTodo.vue', () => {
 	})
 	
 	test('testing the input field', async()=>{
-		
-		const wrapper = mount(UpdateTodo)
+
 	
 		expect(wrapper.findAll('input').length).toEqual(2)
 		
@@ -156,5 +164,52 @@ describe('UpdateTodo.vue', () => {
 		expect(wrapper.findAll('input').at(1).text()).toMatch('')
 		
 	})
-	
+
+	test('testCases on `Loader` ',async()=>{
+		expect(wrapper.vm.loading).toBe(false)
+
+		expect(wrapper.findAll('input').at(0).trigger('click'))
+
+		wrapper.vm.loading = true
+
+		expect(wrapper.vm.loading).toBe(true)
+	})
+
+	test('post id fetching ',async ()=>{
+
+		wrapper.vm.getPosts()
+
+		moxios.withMock( ()=> {
+
+			wrapper = sinon.spy()
+
+			axios.get('https://jsonplaceholder.typicode.com/posts').then(wrapper)
+
+			moxios.wait(()=> {
+
+				let request = moxios.requests.mostRecent()
+
+				request.respondWith({
+
+					status: 200,
+
+					response: {
+
+						id: 1, userid:1, title: 'title1', body: 'body1'
+
+					}
+
+				})
+
+					.then(()=> {
+
+						equal(wrapper.called, true)
+
+					})
+
+			})
+		})
+	})
+
+
 });

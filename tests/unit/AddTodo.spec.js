@@ -10,6 +10,8 @@ import axios from "axios";
 
 import {equal} from "assert";
 
+import Swal from "sweetalert2";
+
 const {
 	
 	createRouterMock,
@@ -65,7 +67,7 @@ describe("Adding Data", () => {
 		
 		let wrapper = mount(AddTodo,{
 			
-			stubs:['router-link','required']
+			stubs:['router-link','required','Swal']
 			
 		})
 		
@@ -90,18 +92,18 @@ describe("Adding Data", () => {
 					
 					mocks: {
 						
-						$router: mockRouter
-						
+						$router: mockRouter,
+						loading:false
 					}
 					
 				},
 				
-				stubs:['router-link','required']
+				stubs:['router-link','required','Swal','loading']
 				
 			})
 			
 			wrapper.vm.onPost()
-			
+
 			wrapper.find("button").trigger("click")
 			
 			wrapper = sinon.spy()
@@ -152,6 +154,43 @@ describe("Adding Data", () => {
 		
 		expect(mockRouter.push).toHaveBeenCalledWith('/home')
 		
+	})
+
+	test('testCases on `Loader` ',async()=>{
+		
+		const wrapper = mount(AddTodo,{
+			data()
+			{
+				return {
+					
+					loading: false
+					
+				}
+				
+			},
+
+			global: {
+
+				mocks: {
+
+					$router: mockRouter,
+					loading:false
+
+				}
+
+			},
+
+			stubs:['router-link','required','loading','Swal']
+			
+		})
+		
+		expect(wrapper.vm.loading).toBe(false)
+
+		expect(wrapper.findAll('button').at(1).trigger('click'))
+
+		wrapper.vm.loading = true
+
+		expect(wrapper.vm.loading).toBe(true)
 	})
 	
 	})

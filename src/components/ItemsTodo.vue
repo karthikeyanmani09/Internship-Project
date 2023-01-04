@@ -1,4 +1,5 @@
 <template>
+
 	<div class="content-wrapper">
 		
 		<section class="content-header">
@@ -95,7 +96,7 @@
 								
 							</router-link>
 							
-							<a class="btn btn-danger btn-sm button3" @click="deletePost(post.id)">
+							<a  type="button" class="btn btn-danger btn-sm" id="delete" @click="deletePost(post.id)">
 								
 								<i class="fas fa-trash"></i> Delete
 								
@@ -142,7 +143,7 @@
 	<aside class="control-sidebar control-sidebar-dark">
 	
 	</aside>
-	
+
 
 </template>
 
@@ -157,9 +158,6 @@ export default {
 		data() {
 		  
 			  return {
-					
-					isActive:false,
-					
 					posts:[],
 					
 					id:null,
@@ -190,10 +188,6 @@ export default {
 			
 			this.$router.push('/add')
 			
-		},
-			toggle(){
-			
-			this.isActive= !this.isActive;
 		},
 			  setPages() {
 			  

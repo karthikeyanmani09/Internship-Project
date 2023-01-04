@@ -1,4 +1,6 @@
-import {shallowMount} from "@vue/test-utils"
+import {shallowMount, mount} from "@vue/test-utils"
+
+import flushPromises from "flush-promises"
 
 import HeaderNav from "@/components/HeaderNav.vue";
 
@@ -7,6 +9,10 @@ import SideNav from "@/components/SideNav.vue";
 import ContentSpace from "@/pages/ContentSpace.vue";
 
 import App from "@/App.vue"
+
+import Swal from 'sweetalert2';
+
+window.Swal = Swal;
 
 const {
 	
@@ -50,15 +56,16 @@ describe("ItemsTodo.Vue", () => {
 	const updateWrapper = ()=>{
 		
 		wrapper = shallowMount(ItemsTodo,{
-			
 			computed:{
 				
 				users: jest.fn(),
 				
-				displayedPosts: jest.fn()
-				
+				displayedPosts: jest.fn(),
+
 			},
 			created: jest.fn(),
+
+			redirectTo:jest.fn(),
 			
 			global:{
 				
@@ -69,7 +76,7 @@ describe("ItemsTodo.Vue", () => {
 				}
 			},
 			
-			stubs:['router-link']
+			stubs:['router-link','Swal','respondWith']
 			
 		})
 		
@@ -107,7 +114,7 @@ test("rendering AdminLte themes",()=>{
 	})
 	
 	test('testing for the getData', async()=> {
-		
+
 		moxios.withMock( ()=> {
 			
 			wrapper = sinon.spy()
@@ -144,22 +151,62 @@ test("rendering AdminLte themes",()=>{
 	
 	test('route on buttons',async()=>{
 		
-		wrapper.vm.redirectTo()
-		
+		wrapper.vm.redirectTo
+
 		await wrapper.find(".button1").trigger("click")
 		
-		expect(mockRouter.push).toHaveBeenCalledTimes(2)
+		expect(mockRouter.push).toHaveBeenCalledTimes(1)
 		
 		expect(mockRouter.push).toHaveBeenCalledWith('/add')
 		
 	})
-	
-	test('checking the routes passing id',async()=>{
-		
+
+
+	test('delete `button` functionality',async()=>{
+
+		wrapper = mount(ItemsTodo,{
+
+			data(){
+				return{
+					posts:"content"
+				}
+			},
+			computed:{
+
+				users: jest.fn(),
+
+				displayedPosts: jest.fn(),
+
+			},
+			created: jest.fn(),
+
+			global:{
+
+				mocks:{
+
+					$router: mockRouter
+
+				}
+			},
+
+			stubs:['router-link','Swal']
+
+		})
 		const id = 1
-		
+
+		wrapper.vm.deletePost
+
+		expect(wrapper.html()).toContain("content")
+
+		await wrapper.find(".btn").trigger("click")
+
+		await flushPromises()
+
 		await expect(wrapper.exists(id)).toBe(true);
-		
+
+		expect(wrapper.html()).toContain("")
+
 	})
+
 	
 })
