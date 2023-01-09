@@ -1,4 +1,4 @@
-import {shallowMount, mount} from "@vue/test-utils"
+import {shallowMount} from "@vue/test-utils"
 
 import flushPromises from "flush-promises"
 
@@ -56,6 +56,12 @@ describe("ItemsTodo.Vue", () => {
 	const updateWrapper = ()=>{
 		
 		wrapper = shallowMount(ItemsTodo,{
+
+			data(){
+			return{
+				loading:true,
+			}
+			},
 			computed:{
 				
 				users: jest.fn(),
@@ -71,13 +77,12 @@ describe("ItemsTodo.Vue", () => {
 				
 				mocks:{
 					
-					$router: mockRouter
+					$router: mockRouter,
+					stubs:['Swal','paginate'],
 					
 				}
 			},
-			
-			stubs:['router-link','Swal','respondWith']
-			
+			router
 		})
 		
 	}
@@ -140,7 +145,6 @@ test("rendering AdminLte themes",()=>{
 					.then(()=> {
 						
 						equal(wrapper.called, true)
-						
 					})
 				
 			})
@@ -164,37 +168,9 @@ test("rendering AdminLte themes",()=>{
 
 	test('delete `button` functionality',async()=>{
 
-		wrapper = mount(ItemsTodo,{
-
-			data(){
-				return{
-					posts:"content"
-				}
-			},
-			computed:{
-
-				users: jest.fn(),
-
-				displayedPosts: jest.fn(),
-
-			},
-			created: jest.fn(),
-
-			global:{
-
-				mocks:{
-
-					$router: mockRouter
-
-				}
-			},
-
-			stubs:['router-link','Swal']
-
-		})
 		const id = 1
 
-		wrapper.vm.deletePost
+		wrapper.vm.deletePost()
 
 		expect(wrapper.html()).toContain("content")
 
@@ -208,5 +184,4 @@ test("rendering AdminLte themes",()=>{
 
 	})
 
-	
 })

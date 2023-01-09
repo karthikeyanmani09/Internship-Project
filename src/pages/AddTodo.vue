@@ -58,7 +58,7 @@
 					
                 <label for="postTitle"> Title </label>
 					
-                <Field type="text" :rules="validateForm" name="title" id="title" placeholder="Title" data-test="title"  v-model="title" class="form-control title" />
+                <Field type="text" :rules="validateForm" name="title" id="title" data-test="title" placeholder="Title"  v-model="title" class="form-control" />
 					
 			              <ErrorMessage class="text-red" name="title"/>
 					
@@ -219,12 +219,15 @@ export default {
 							else{
 								  
 										return ''
+
 							}
 							
 				},
 		  
 	  addRedirect(){
+
 		  this.$router.push('/home')
+
 	  },
 		 
 	},

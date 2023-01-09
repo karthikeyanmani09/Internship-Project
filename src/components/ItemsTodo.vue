@@ -304,4 +304,5 @@ export default {
 	margin-bottom: 0.5rem;
 	
 }
+
 </style>

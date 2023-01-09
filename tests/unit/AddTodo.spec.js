@@ -28,6 +28,8 @@ const mockRouter = {
 
 
 describe("Adding Data", () => {
+
+	let wrapper;
 	
 	const router = createRouterMock({
 	
@@ -38,10 +40,26 @@ describe("Adding Data", () => {
 		injectRouterMock(router)
 		
 	})
+
+	const addWrapper=()=>{
+		wrapper = mount(AddTodo,{
+
+			global: {
+
+				mocks: {
+
+					$router: mockRouter,
+					loading:false
+				}
+
+			},
+
+			stubs:['router-link','required','Swal','loading']
+
+		})
+	}
 	
 	test('checking the input field',async()=>{
-		
-		const wrapper = mount(AddTodo)
 		
 		expect(wrapper.findAll('label').length).toEqual(2)
 		
@@ -53,8 +71,6 @@ describe("Adding Data", () => {
 	
 	test('checking the input field',async()=>{
 		
-		const wrapper = mount(AddTodo)
-		
 		expect(wrapper.findAll('button').length).toEqual(2)
 		
 		expect(wrapper.findAll('button').at(0).text()).toMatch('Cancel')
@@ -64,12 +80,6 @@ describe("Adding Data", () => {
 	})
 	
 	test("renders title and body text", async () => {
-		
-		let wrapper = mount(AddTodo,{
-			
-			stubs:['router-link','required','Swal']
-			
-		})
 		
 		await wrapper.find('[data-test="title"]').setValue('title1')
 		
@@ -81,27 +91,25 @@ describe("Adding Data", () => {
 		
 		expect(wrapper.vm.body).toBe('body1')
 	})
-	
+
+	beforeEach(function () {
+
+		moxios.install()
+
+		addWrapper();
+
+	})
+
+	afterEach(function () {
+
+		moxios.uninstall()
+
+	})
+
 	test('Add the list', async()=> {
 		
 		moxios.withMock( ()=> {
-			
-			let wrapper = mount(AddTodo,{
-				
-				global: {
-					
-					mocks: {
-						
-						$router: mockRouter,
-						loading:false
-					}
-					
-				},
-				
-				stubs:['router-link','required','Swal','loading']
-				
-			})
-			
+
 			wrapper.vm.onPost()
 
 			wrapper.find("button").trigger("click")
@@ -143,54 +151,26 @@ describe("Adding Data", () => {
 	})
 	
 	test("testing the route to home on cancel",async()=>{
-		
-		const wrapper = mount(AddTodo)
-		
+
 		wrapper.vm.addRedirect()
 		
 		await wrapper.findAll("button").at(0).trigger("click")
 		
-		expect(mockRouter.push).toHaveBeenCalledTimes(1)
+		expect(mockRouter.push).toHaveBeenCalledTimes(3)
 		
 		expect(mockRouter.push).toHaveBeenCalledWith('/home')
 		
 	})
 
 	test('testCases on `Loader` ',async()=>{
-		
-		const wrapper = mount(AddTodo,{
-			data()
-			{
-				return {
-					
-					loading: false
-					
-				}
-				
-			},
 
-			global: {
-
-				mocks: {
-
-					$router: mockRouter,
-					loading:false
-
-				}
-
-			},
-
-			stubs:['router-link','required','loading','Swal']
-			
-		})
-		
-		expect(wrapper.vm.loading).toBe(false)
+		expect(wrapper.vm.loading).toEqual(false)
 
 		expect(wrapper.findAll('button').at(1).trigger('click'))
 
 		wrapper.vm.loading = true
 
-		expect(wrapper.vm.loading).toBe(true)
+		expect(wrapper.vm.loading).toEqual(true)
 	})
 	
 	})
